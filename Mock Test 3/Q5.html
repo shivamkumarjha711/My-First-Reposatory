@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Form Validation</title>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+form div {
+  margin-bottom: 10px;
+}
+
+label {
+  display: inline-block;
+  width: 150px;
+  vertical-align: top;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+input[type="number"],
+select,
+input[type="date"],
+input[type="color"] {
+  width: 200px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button[type="submit"] {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+  </style>
+</head>
+<body>
+  <h1>Form Validation</h1>
+  
+  <form id="myForm" onsubmit="validateForm(event)">
+    <div>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required>
+    </div>
+    <div>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+    <div>
+      <label for="phone">Phone Number:</label>
+      <input type="tel" id="phone" name="phone" required>
+    </div>
+    <div>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+    </div>
+    <div>
+      <label for="age">Age:</label>
+      <input type="number" id="age" name="age" min="1" max="120" required>
+    </div>
+    <div>
+      <label for="gender">Gender:</label>
+      <select id="gender" name="gender" required>
+        <option value="">Select</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div>
+      <label for="dob">Date of Birth:</label>
+      <input type="date" id="dob" name="dob" required>
+    </div>
+    <div>
+      <label for="color">Favorite Color:</label>
+      <input type="color" id="color" name="color" required>
+    </div>
+    <button type="submit">Submit</button>
+  </form>
+  
+  <script>
+    function validateForm(event) {
+  event.preventDefault(); // Prevent form submission to check validation
+
+  // Fetch form inputs
+  var nameInput = document.getElementById("name");
+  var emailInput = document.getElementById("email");
+  var phoneInput = document.getElementById("phone");
+  var passwordInput = document.getElementById("password");
+  var ageInput = document.getElementById("age");
+  var genderInput = document.getElementById("gender");
+  var dobInput = document.getElementById("dob");
+  var colorInput = document.getElementById("color");
+
+  // Validate each input
+  var isValid = true;
+  var errorMessages = [];
+
+  if (!nameInput.value) {
+    isValid = false;
+    errorMessages.push("Name is required.");
+  }
+
+  if (!emailInput.value || !validateEmail(emailInput.value)) {
+    isValid = false;
+    errorMessages.push("Invalid email address.");
+  }
+
+  if (!phoneInput.value || !validatePhoneNumber(phoneInput.value)) {
+    isValid = false;
+    errorMessages.push("Invalid phone number.");
+  }
+
+  if (!passwordInput.value || passwordInput.value.length < 8) {
+    isValid = false;
+    errorMessages.push("Password must be at least 8 characters long.");
+  }
+
+  if (!ageInput.value || ageInput.value < 1 || ageInput.value > 120) {
+    isValid = false;
+    errorMessages.push("Invalid age.");
+  }
+
+  if (!genderInput.value) {
+    isValid = false;
+    errorMessages.push("Gender is required.");
+  }
+
+  if (!dobInput.value) {
+    isValid = false;
+    errorMessages.push("Date of birth is required.");
+  }
+
+  if (!colorInput.value) {
+    isValid = false;
+    errorMessages.push("Favorite color is required.");
+  }
+
+  // Display error messages, if any
+  var errorDiv = document.getElementById("errorDiv");
+  errorDiv.innerHTML = "";
+  if (!isValid) {
+    errorMessages.forEach(function (errorMessage) {
+      var errorP = document.createElement("p");
+      errorP.classList.add("error");
+      errorP.textContent = errorMessage;
+      errorDiv.appendChild(errorP);
+    });
+  } else {
+    // Form is valid, do further processing or submit the form
+    document.getElementById("myForm").submit();
+  }
+}
+
+function validateEmail(email) {
+  // Simple email validation regex pattern
+  var emailPattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  return emailPattern.test(email);
+}
+
+function validatePhoneNumber(phoneNumber) {
+  // Simple phone number validation regex pattern
+  var phonePattern = /^\d{10}$/;
+  return phonePattern.test(phoneNumber);
+}
+
+  </script>
+</body>
+</html>
